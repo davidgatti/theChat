@@ -1,0 +1,30 @@
+
+{
+	"name": "The Chat",
+	"description": "A simple 🗣 system to have some fun with Socket.io",
+	"repository": "https://github.com/",
+	"success_url": "/",
+	"addons": [
+		{
+			"plan": "heroku-redis"
+		}
+	],
+	"env": {
+		"NODE_ENV": {
+			"description": "The environment can be: production, staging, development or local",
+			"value": "production"
+		},
+		"NPM_CONFIG_PRODUCTION": {
+			"description": "By default Heroku sets this to true, if you are deploying a dev version of the code, set this false.",
+			"value": "true"
+		},
+		"REDIS_URL": {
+			"description": "The full URL to the REDIS server",
+			"value": "redis://"
+		},
+		"PORT": {
+			"description": "By default Heroku sets this to true, if you are deploying a dev version of the code, set this false.",
+			"value": "3000"
+		}
+	}
+}

@@ -17,6 +17,6 @@
   },
   "devDependencies": {
     "foreman": "2.0.0",
-    "should": "^11.2.1"
+    "should": "11.2.1"
   }
 }

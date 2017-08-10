@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html>
+	<head>
+
+		<title>The Chat</title>
+
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.slim.js" crossorigin="anonymous"></script>
+
+		<style type="text/css">
+
+			* {
+				font-family: monospace;
+			}
+
+			.inline
+			{
+				display: inline;
+			}
+
+		</style>
+
+	</head>
+
+	<body>
+
+		<div id="user">
+
+			<p class="inline">Your name:</p>
+
+			<input id="name" autocomplete="off" />
+
+			<button id="save_name" value="">Save</button>
+
+		</div>
+
+		<div id="messages">
+
+			<p>Messages:</p>
+			<ul></ul>
+
+		</div>
+
+		<div id="message">
+
+			<p class="inline">Message:</p>
+
+			<input id="m" autocomplete="off" />
+
+			<button id="send" value="" style="display: none;">Send</button>
+
+		</div>
+
+	</body>
+
+</html>
+
+<script>
+
+	//
+	//	Depending on if you want to test the app locally or remotely, comment
+	//	or uncomment the right line
+	//
+	//var server_url = "http://192.168.56.100:3050";
+	var server_url = "https://the-epic-chat.herokuapp.com";
+
+	//
+	//	Connect to the socket server and create a Socket.IO object
+	//
+	var socket = io(server_url, {
+
+		//
+		//	This is needed when working with multiple WebSockets
+		//
+		transports: ['websocket']
+
+	});
+
+	//
+	//	The default name of the room to join by each new user
+	//
+	var room_name = "top_secret";
+
+	//
+	//	Join the default room
+	//
+	socket.emit('new_room', room_name);
+
+	//	  ____  _   _
+	//	 / __ \| \ | |
+	//	| |  | |  \| |
+	//	| |  | | . ` |
+	//	| |__| | |\  |
+	//	 \____/|_| \_|
+	//
+
+	//
+	//	Create an array that will be used to store all the messages
+	//	for a specific conversation.
+	//
+	var db = [];
+
+	//
+	//	The server sends to the front-end one message at the time. Each time
+	//	this happens we react to it.
+	//
+	socket.on('message', function(msg) {
+
+		//
+		//	Add the message on the page as it comes no mater the order
+		//
+		//	IMPORTANT
+		//
+		//		With this solution we can reorder the messages as they come.
+		//		No matter how the server sends them to us.
+		//
+		$('#messages > ul').append($('<li>').text(msg.date + ": " + msg.body));
+
+		//
+		//	Push the message that we got in a array, which will be used for
+		//	storing all the messages.
+		//
+		db.push(msg)
+
+		//
+		//	Sort the array based on the date
+		//
+		db.sort(function(a, b) {
+
+			if (a.date > b.date)
+			{
+				return 1;
+			}
+
+			if (a.date < b.date)
+			{
+				return -1;
+			}
+
+			//
+			//	a must be equal to b
+			//
+			return 0;
+
+		});
+
+		//
+		//	Once the array is sorted, we go over the LI list, and replace
+		//	the content of the LI with the new ordered messages.
+		//
+		//	IMPORTANT
+		//
+		//		With this solution we can reorder the messages as they come.
+		//		No matter how the server sends them to us..
+		//
+		$('#messages > ul > li').each(function(index) {
+
+			//
+			//	1.	Create a time object based from the message time stamp
+			//
+			var date = new Date(db[index].date);
+
+			//
+			//	2.	Get the data from the time object that we need
+			//
+			var month = date.getMonth();
+			var day = date.getDay();
+			var year = date.getFullYear();
+			var hour = date.getHours();
+			var minute = date.getMinutes();
+			var secconds = date.getSeconds();
+
+			//
+			//	3.	Format the time in a way that is nice :)
+			//
+			var formatedDate = pad(month, 2) + "-" +
+							   pad(day, 2) + "-" +
+							   year + " " +
+							   pad(hour, 2) + ":" +
+							   pad(minute, 2) + ":" +
+							   pad(secconds, 2);
+
+			//
+			//	4.	Replace the message with one in the right order.
+			//
+			$(this).text(formatedDate + " | " + db[index].name + " | " + db[index].body);
+
+		});
+
+	});
+
+	//	  _____ _      _____ _____ _  __
+	//	 / ____| |    |_   _/ ____| |/ /
+	//	| |    | |      | || |    | ' /
+	//	| |    | |      | || |    |  <
+	//	| |____| |____ _| || |____| . \
+	//	 \_____|______|_____\_____|_|\_\
+	//
+
+	//
+	//	React when the user wants to send the message
+	//
+	$('#send').on("click", function() {
+
+		//
+		//	1.	Get all the data that we need for the message
+		//
+		var name = $('#name').val();
+		var message = $('#m').val();
+
+		//
+		//	2.	Create our message
+		//
+		var obj = {
+			name: name,
+			message: message,
+			room: room_name
+		};
+
+		//
+		//	3.	Clear the message field so the user get a new clean slate
+		//
+		$('#m').val('');
+
+		//
+		//	->	Send the message to the back end server
+		//
+		socket.emit('message', obj);
+
+	});
+
+	//
+	//	React when the user wants to save his or hers user name
+	//
+	$('#save_name').on("click", function() {
+
+		//
+		//	1.	Check if the user did write something in the input field.
+		//
+		if($('#name').val())
+		{
+			//
+			//	1.	Unlock the message section only if the name field have
+			//		something in it.
+			//
+			$('#send').css('display', '');
+		}
+
+	});
+
+	//  _    _   ______   _        _____    ______   _____     _____
+	// | |  | | |  ____| | |      |  __ \  |  ____| |  __ \   / ____|
+	// | |__| | | |__    | |      | |__) | | |__    | |__) | | (___
+	// |  __  | |  __|   | |      |  ___/  |  __|   |  _  /   \___ \
+	// | |  | | | |____  | |____  | |      | |____  | | \ \   ____) |
+	// |_|  |_| |______| |______| |_|      |______| |_|  \_\ |_____/
+	//
+
+	//
+	//	Simple function to pad a string with zeros.
+	//
+	function pad(str, max)
+	{
+		return str.toString().length < max ? pad("0" + str, max) : str;
+	}
+
+</script>

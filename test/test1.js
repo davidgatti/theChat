@@ -3,7 +3,7 @@ let assert = require('assert');
 let should = require('should');
 
 //
-//	1.	Our server
+//	Our server
 //
 let socketURL = 'http://192.168.56.100:3050';
 

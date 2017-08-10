@@ -6,13 +6,17 @@ A simple 🗣 system to have some fun with Socket.io
 
 This project was designed to run in a Unix or Linux system. If you use Windows, I'm sorry but I have no idea how to go about making it work on that system. I'm open to any PR to fix this :)
 
-# How to run the project
+# How to run the project in production
+
+This project is deployed on Heroku, and the `the-chat.html` is pointing to that external server, meaning you can start chatting with your friends right away.
+
+# How to run the project locally
 
 1. you need ot have Redis on your machine to make this work.
 1. you need to create a `.env` file, either by hand - check out the `app.json` to find out which variables are needed. Or you can install [env-auto](https://www.npmjs.com/package/env-auto) and use that simple tool to auto generate the `.env` file for you. Some edits might be required.
 1. type `npm install` to install all the necessary modules
 1. type `npm run` to start the server
-1. open the `index.html` file and have fun with your friends
+1. open the `the-chat.html` file and have fun with your friends
 
 # What to expect
 
@@ -23,8 +27,10 @@ This project was designed to run in a Unix or Linux system. If you use Windows, 
 
 # How to run the test
 
-https://stackoverflow.com/questions/15509231/unit-testing-node-js-and-websockets-socket-io
-http://liamkaufman.com/blog/2012/01/28/testing-socketio-with-mocha-should-and-socketio-client/
+1. Start the server in another terminal window.
+1. Type `npm test`, and keep your finger cross 🤞.
+
+**WARNING**: some IP and port changes may apply.
 
 # What I didn't get from the instructions
 

@@ -32,12 +32,29 @@ This project is deployed on Heroku, and the `the-chat.html` is pointing to that 
 
 **WARNING**: some IP and port changes may apply.
 
-# What I didn't get from the instructions
+# The End
 
-One thing perplexed me is the two microservice situation, so I decided to consider REDIS as the 2nd microservice :D
+If you've enjoyed this article/project, please consider giving it a 🌟 or donate.
 
-# The end
+- [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/gattidavid/25)
+- [![Star on GitHub](https://img.shields.io/github/stars/davidgatti/theChat.svg?style=social)](https://github.com/davidgatti/theChat/stargazers)
+- [![Watch on GitHub](https://img.shields.io/github/watchers/davidgatti/theChat.svg?style=social)](https://github.com/davidgatti/theChat/watchers)
 
-I hope that you enjoyed playing with the chat app, and don't hesitate to check some other projects that I did by following this URL: https://github.com/davidgatti 😊
+Also check out my [GitHub account](https://github.com/davidgatti), where I have other articles and apps that you might find interesting.
 
-David.
+## Where to follow
+
+You can follow me on social media 🐙😇, at the following locations:
+
+- [GitHub](https://github.com/davidgatti)
+- [Twitter](https://twitter.com/dawidgatti)
+- [Instagram](https://www.instagram.com/gattidavid/)
+
+## More about me
+
+I don’t only live on GitHub, I try to do many things not to get bored 🙃. To learn more about me, you can visit the following links:
+
+- [Podcasts](http://david.gatti.pl/podcasts)
+- [Technical Articles](http://david.gatti.pl/technical_articles)
+- [Software Projects](http://david.gatti.pl/software_projects)
+- [Hardware Projects](http://david.gatti.pl/hardware_projects)
